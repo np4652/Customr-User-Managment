@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UserManagement.Domain.Interfaces;
 
-namespace UserManagement.Infrastructure.Repositories
+namespace UserManagement.Infrastructure.Services
 {
     public class TokenManager : ITokenManager
     {

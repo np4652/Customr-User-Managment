@@ -21,6 +21,8 @@ namespace UserManagement.Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
+        public bool GAuthRequired { get; set; }
+        public string GAuthAccountKey { get; set; }
     }
 
     public class UserColumn : IColumn
@@ -34,6 +36,8 @@ namespace UserManagement.Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
+        public bool GAuthRequired { get; set; }
+        public string GAuthAccountKey { get; set; }
         public ApplicationUser ToApplicationUser()
         {
             return new ApplicationUser

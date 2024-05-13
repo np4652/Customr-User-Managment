@@ -2,7 +2,7 @@
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Interfaces;
 
-namespace UserManagement.Infrastructure.Repositories
+namespace UserManagement.Infrastructure.Services
 {
     public class SignInManager : PasswordManager, ISignInManager
     {

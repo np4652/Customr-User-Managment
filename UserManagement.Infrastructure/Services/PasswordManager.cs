@@ -2,9 +2,9 @@
 using System.Text;
 using UserManagement.Domain.Interfaces;
 
-namespace UserManagement.Infrastructure.Repositories
+namespace UserManagement.Infrastructure.Services
 {
-    public class PasswordManager: IPasswordManager
+    public class PasswordManager : IPasswordManager
     {
         public async Task<bool> VerifyPassword(string password, string hashedPassword, string salt)
         {
