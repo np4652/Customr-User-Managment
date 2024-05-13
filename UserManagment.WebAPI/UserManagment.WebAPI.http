@@ -1,0 +1,6 @@
+@UserManagment.WebAPI_HostAddress = http://localhost:5109
+
+GET {{UserManagment.WebAPI_HostAddress}}/Account
+//Accept: application/json
+
+###
