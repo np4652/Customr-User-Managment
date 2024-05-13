@@ -1,5 +1,4 @@
-﻿using UserManagement.Domain.Base;
-using UserManagement.Domain.Entities;
+﻿using UserManagement.Domain.Entities;
 
 namespace UserManagment.WebAPI.Modals
 {

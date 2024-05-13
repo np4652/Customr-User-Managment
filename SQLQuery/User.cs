@@ -3,7 +3,7 @@ namespace SQLQuery
 {
     public class User
     {
-        public const string Create = @"INSERT INTO Users(Role,UserName,FirstName,LastName,MobileNo,Email,PasswordHash,PasswordSalt) VALUES (@Role,@UserName,@FirstName,@LastName,@MobileNo,@Email,@PasswordHash,@PasswordSalt);
+        public const string Create = @"INSERT INTO Users(Role,UserName,FirstName,LastName,MobileNo,Email,PasswordHash,PasswordSalt,GAuthRequired,GAuthAccountKey) VALUES (@Role,@UserName,@FirstName,@LastName,@MobileNo,@Email,@PasswordHash,@PasswordSalt,@GAuthRequired,@GAuthAccountKey);
                                        SELECT 1 StatusCode,'User Created successfully' ResponseText";
         public const string Delete = @"";
         public const string GetAll = @"";
