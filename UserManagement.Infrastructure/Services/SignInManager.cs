@@ -1,6 +1,7 @@
 ﻿using UserManagement.Domain.Base;
-using UserManagement.Domain.Entities;
 using UserManagement.Domain.Interfaces;
+using UserManagement.Entities;
+using Usermanagment.Entities;
 
 namespace UserManagement.Infrastructure.Services
 {

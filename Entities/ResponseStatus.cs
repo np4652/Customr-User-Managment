@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserManagement.Domain.Base
+namespace UserManagement.Entities
 {
     public enum ResponseStatus
     {

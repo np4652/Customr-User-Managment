@@ -1,6 +1,5 @@
-﻿
-using UserManagement.Domain.Base;
-using UserManagement.Domain.Entities;
+﻿using UserManagement.Domain.Base;
+using Usermanagment.Entities;
 
 namespace UserManagement.Domain.Interfaces
 {

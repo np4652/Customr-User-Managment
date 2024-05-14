@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using UserManagement.Domain.Base;
-using UserManagement.Domain.Entities;
 using UserManagement.Domain.Interfaces;
+using UserManagement.Entities;
+using Usermanagment.Entities;
+using Usermanagment.Entities.DTOs;
 using UserManagment.WebAPI.Modals;
 
 namespace UserManagment.WebAPI.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
@@ -27,6 +30,10 @@ namespace UserManagment.WebAPI.Controllers
         {
             IResponse<AuthenticateResponse> res = new Response<AuthenticateResponse>();
             var user = await _userService.GetByUserName(userName);
+            if (user == null)
+            {
+                return res;
+            }
             var signinRes = await _signInManager.SignInAsync(user.ToApplicationUser(), password);
             /* Genrate JWT Tokan Here */
             if (signinRes.StatusCode == ResponseStatus.Success && user.Id > 0)

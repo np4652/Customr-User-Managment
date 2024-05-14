@@ -1,4 +1,4 @@
-﻿namespace UserManagement.Domain.Base
+﻿namespace UserManagement.Entities
 {
     public enum UserRole
     {

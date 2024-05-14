@@ -1,6 +1,7 @@
 ﻿using UserManagement.Domain.Base;
+using UserManagement.Entities;
 
-namespace UserManagement.Domain.Entities
+namespace Usermanagment.Entities
 {
     public class ApplicationUser
     {

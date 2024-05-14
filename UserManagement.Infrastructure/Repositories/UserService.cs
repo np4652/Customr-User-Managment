@@ -1,6 +1,6 @@
 ﻿using UserManagement.Domain.Base;
-using UserManagement.Domain.Entities;
 using UserManagement.Domain.Interfaces;
+using Usermanagment.Entities;
 using _query = SQLQuery.User;
 
 namespace UserManagement.Infrastructure.Repositories

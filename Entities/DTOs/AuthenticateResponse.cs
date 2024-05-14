@@ -1,6 +1,4 @@
-﻿using UserManagement.Domain.Entities;
-
-namespace UserManagment.WebAPI.Modals
+﻿namespace Usermanagment.Entities.DTOs
 {
     public class AuthenticateResponse
     {

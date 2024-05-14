@@ -1,4 +1,6 @@
-﻿namespace UserManagement.Domain.Base
+﻿using UserManagement.Entities;
+
+namespace UserManagement.Domain.Base
 {
     public interface IResponse
     {
