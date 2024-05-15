@@ -1,0 +1,42 @@
+﻿@page 
+@model Usermanagment.WebApp.Views.User.TwoFactorModel
+@{
+}
+<div class="col-md-12">
+    <h6>
+        Enable authenticator powered by <span>
+            <img src="/img/googlelogo_color_272x92dp.png" style="height: 25px" />
+        </span>
+    </h6>
+    <div>
+        <p>To use an authenticator app go through the following steps:</p>
+        <ol class="list">
+            <li>
+                <p class="mb-2">
+                    Download a two-factor Google Authenticator for
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en" target="_blank">Android</a> and
+                    <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">iOS</a>.
+                </p>
+            </li>
+            <li>
+                <p class="mb-2">Scan the QR Code or enter this key <strong>@Model.TwoFactorSetupVM.AccountSecretKey</strong> into your two factor authenticator app. Spaces and casing do not matter.</p>
+                <p class="text-center"><img src="@Model.TwoFactorSetupVM.QrCodeSetupImageUrl" style="width:150px;object-fit:cover" /></p>
+            </li>
+            <li>
+                <p class="mb-2">
+                    Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
+                    with a unique code. Enter the code in the confirmation box below.
+                </p>
+                @Html.AntiForgeryToken()
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter Authenticator Code"/>
+                        <div class="input-group-append">
+                            <span class="btn btn-dark">Configue</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </div>
+</div>

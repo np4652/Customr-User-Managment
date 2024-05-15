@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Helpers.Extensions
+@{
+    bool isAuthenticated = !string.IsNullOrEmpty(User.GetLoggedInUserToken());
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,9 +29,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Logout</a>
-                        </li>
+                        @if (isAuthenticated)
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile">Profile</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Logout</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

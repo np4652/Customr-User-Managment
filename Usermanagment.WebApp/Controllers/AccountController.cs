@@ -36,16 +36,7 @@ namespace Usermanagment.WebApp.Controllers
                 try
                 {
                     client.BaseAddress = new Uri("http://localhost:5109");
-                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer YourAccessToken");
                     client.DefaultRequestHeaders.Add("Accept", "application/json");
-
-                    string jsonContent = JsonConvert.SerializeObject(new
-                    {
-                        userName = user,
-                        password = password,
-                    });
-                    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
                     HttpResponseMessage response = await client.PostAsync($"/api/Account/SignIn?userName={user}&password={password}", null);
                     if (response.IsSuccessStatusCode)
                     {

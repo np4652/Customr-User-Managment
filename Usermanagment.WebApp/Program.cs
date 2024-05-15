@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddAuthentication(SystemKeys.AuthenticationScheme)
     .AddCookie(SystemKeys.AuthenticationScheme, options => {
         options.LoginPath = "/Account/Login";
@@ -25,9 +26,14 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAuthorization();
+app.MapRazorPages();
+app.UseEndpoints(enpoints =>
+{
+    enpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    enpoints.MapRazorPages();
+});
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
