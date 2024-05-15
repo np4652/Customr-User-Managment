@@ -17,12 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usermanagment.WebApp", "Use
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{40175386-AA4F-49CB-9935-0B8D7D285723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{20EC1F12-208E-4449-8F56-CE13BBD5098E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Refrences", "Refrences", "{4868DADF-3640-4314-B8CA-7FCD3146311E}"
-	ProjectSection(SolutionItems) = preProject
-		C:\Users\Microsoft\Desktop\Publish\UserManagment\GoogleAuthenticator.dll = C:\Users\Microsoft\Desktop\Publish\UserManagment\GoogleAuthenticator.dll
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Helpers\Helpers.csproj", "{20EC1F12-208E-4449-8F56-CE13BBD5098E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
