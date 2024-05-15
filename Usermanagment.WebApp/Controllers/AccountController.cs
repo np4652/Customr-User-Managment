@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text;
 using UserManagement.Domain.Base;
+using UserManagement.Entities;
 using Usermanagment.Entities.DTOs;
 using Usermanagment.WebApp.AppCode;
 using DTOs = UserManagment.Entities.DTOs;
