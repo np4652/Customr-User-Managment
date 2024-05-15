@@ -19,20 +19,27 @@ namespace UserManagement.Infrastructure.Services
 
         public GAuthenticatorResponse Setup(string userId, string authenticatorKey = "")
         {
-            authenticatorKey = string.IsNullOrEmpty(authenticatorKey) ? GenrateSecretKey() : authenticatorKey;
-            TwoFactorAuthenticator Authenticator = new TwoFactorAuthenticator();
-            var SetupResult = Authenticator.GenerateSetupCode(ProjectName, userId, authenticatorKey);
-            return new GAuthenticatorResponse
+            try
             {
-                Configuration = new GAuthenticatorResponse.SetupCode
+                authenticatorKey = string.IsNullOrEmpty(authenticatorKey) ? GenrateSecretKey() : authenticatorKey;
+                TwoFactorAuthenticator Authenticator = new TwoFactorAuthenticator();
+                var SetupResult = Authenticator.GenerateSetupCode(ProjectName, userId, authenticatorKey);
+                return new GAuthenticatorResponse
                 {
-                    Account = SetupResult.Account,
-                    AccountSecretKey = SetupResult.AccountSecretKey,
-                    ManualEntryKey = SetupResult.ManualEntryKey,
-                    QrCodeSetupImageUrl = SetupResult.QrCodeSetupImageUrl,
-                    QrString = SetupResult.QrString
-                }
-            };
+                    Configuration = new GAuthenticatorResponse.SetupCode
+                    {
+                        Account = SetupResult.Account,
+                        AccountSecretKey = SetupResult.AccountSecretKey,
+                        ManualEntryKey = SetupResult.ManualEntryKey,
+                        QrCodeSetupImageUrl = SetupResult.QrCodeSetupImageUrl,
+                        QrString = SetupResult.QrString
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public bool Verify(string googlePin, string accountSecretKey)
         {
