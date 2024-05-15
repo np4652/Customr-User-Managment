@@ -18,19 +18,4 @@
     <ProjectReference Include="..\UserManagement.Domain\UserManagement.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="GoogleAuthenticator">
-      <HintPath>..\References\GoogleAuthenticator.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Win32.SystemEvents">
-      <HintPath>..\References\Microsoft.Win32.SystemEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="QRCoder">
-      <HintPath>..\References\QRCoder.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing.Common">
-      <HintPath>..\References\System.Drawing.Common.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
