@@ -9,5 +9,7 @@ namespace SQLQuery
         public const string GetAll = @"";
         public const string Get = @"";
         public const string GetByUserName = @"SELECT * FROM Users(nolock) WHERE UserName = @UserName";
+        public const string SetGAuthAccountKey = @"UPDATE Users SET GAuthRequired = 1, GAuthAccountKey = @GAuthAccountKey WHERE UserName = @UserName;
+                                                   SELECT 1 StatusCode,'Set successfully' ResponseText";
     }
 }

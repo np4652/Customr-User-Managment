@@ -5,6 +5,9 @@ using Usermanagment.Entities;
 using Helpers.Extensions;
 using GoogleAuthenticator;
 using UserManagement.Infrastructure.Services;
+using UserManagment.WebAPI.Modals;
+using UserManagement.Domain.Base;
+using UserManagement.Entities;
 
 namespace UserManagment.WebAPI.Controllers
 {
@@ -35,6 +38,17 @@ namespace UserManagment.WebAPI.Controllers
         public SetupCode SetupTwoFactor()
         {
             return _gAuthManager.Setup(User.GetLoggedInUserName());
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IResponse> Configure2FactorWithApp(ConfigTwoFactorReq req)
+        {
+            IResponse res = new Response();
+            if (_gAuthManager.Verify(req.AuthCode, req.AccountSecretKey))
+            {
+                res = await _userService.SetGAuthAccountKey(User.GetLoggedInUserName(), req.AccountSecretKey);
+            }
+            return res;
         }
     }
 }
