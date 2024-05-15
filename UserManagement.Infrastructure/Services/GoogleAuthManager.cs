@@ -1,14 +1,15 @@
-﻿using GoogleAuthenticator;
+﻿using Entities.DTOs;
+using GoogleAuthenticator;
 using System.Text;
 
 namespace UserManagement.Infrastructure.Services
 {
     public interface IGoogleAuthenticatorManager
     {
-        SetupCode Setup(string userId, string authenticatorKey = "");
+        GAuthenticatorResponse Setup(string userId, string authenticatorKey = "");
         bool Verify(string googlePin, string accountSecretKey);
     }
-    public class GoogleAuthenticatorManager: IGoogleAuthenticatorManager
+    public class GoogleAuthenticatorManager : IGoogleAuthenticatorManager
     {
         private readonly string ProjectName;
         public GoogleAuthenticatorManager()
@@ -16,12 +17,22 @@ namespace UserManagement.Infrastructure.Services
             ProjectName = GetType().Assembly.FullName.Split(',')[0];
         }
 
-        public SetupCode Setup(string userId, string authenticatorKey = "")
+        public GAuthenticatorResponse Setup(string userId, string authenticatorKey = "")
         {
             authenticatorKey = string.IsNullOrEmpty(authenticatorKey) ? GenrateSecretKey() : authenticatorKey;
             TwoFactorAuthenticator Authenticator = new TwoFactorAuthenticator();
             var SetupResult = Authenticator.GenerateSetupCode(ProjectName, userId, authenticatorKey);
-            return SetupResult;
+            return new GAuthenticatorResponse
+            {
+                Configuration = new GAuthenticatorResponse.SetupCode
+                {
+                    Account = SetupResult.Account,
+                    AccountSecretKey = SetupResult.AccountSecretKey,
+                    ManualEntryKey = SetupResult.ManualEntryKey,
+                    QrCodeSetupImageUrl = SetupResult.QrCodeSetupImageUrl,
+                    QrString = SetupResult.QrString
+                }
+            };
         }
         public bool Verify(string googlePin, string accountSecretKey)
         {

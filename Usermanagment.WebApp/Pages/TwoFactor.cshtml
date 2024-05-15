@@ -1,6 +1,7 @@
 ﻿@page
 @model Usermanagment.WebApp.Views.User.TwoFactorModel
 @{
+    var setupConfig = Model.TwoFactorSetupVM.Configuration;
 }
 <div class="col-md-12">
     <h6>
@@ -19,8 +20,8 @@
                 </p>
             </li>
             <li>
-                <p class="mb-2">Scan the QR Code or enter this key <strong id="txtAccountSecretKey">@Model.TwoFactorSetupVM.AccountSecretKey</strong> into your two factor authenticator app. Spaces and casing do not matter.</p>
-                <p class="text-center"><img src="@Model.TwoFactorSetupVM.QrCodeSetupImageUrl" style="width:150px;object-fit:cover" /></p>
+                <p class="mb-2">Scan the QR Code or enter this key <strong id="txtAccountSecretKey">@setupConfig.AccountSecretKey</strong> into your two factor authenticator app. Spaces and casing do not matter.</p>
+                <p class="text-center"><img src="@setupConfig.QrCodeSetupImageUrl" style="width:150px;object-fit:cover" /></p>
             </li>
             <li>
                 <p class="mb-2">
@@ -29,24 +30,56 @@
                 </p>
                 @Html.AntiForgeryToken()
                 <div class="col-sm-12">
-                    <div class="input-group">
-                        <input type="text" id="txtAuthCode" class="form-control" placeholder="Enter Authenticator Code" />
-                        <div class="input-group-append">
-                            <span class="btn btn-dark" id="btnConfig">Config</span>
+                    @if (!Model.TwoFactorSetupVM.Enabled)
+                    {
+                        <div class="input-group">
+                            <input type="text" id="txtAuthCode" class="form-control" placeholder="Enter Authenticator Code" />
+                            <div class="input-group-append">
+                                <span class="btn btn-dark" id="btnConfig">Config</span>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <span>Google Authenticator is already enabled.</span>
+                        <span class="btn btn-dark" id="btnDisabled">Disable</span>
+                    }
                 </div>
             </li>
         </ol>
     </div>
 </div>
 <script>
-    $('#btnConfig').click(e => {
+    $('#btnConfig').on('click', e => {
         let accountSecretKey = $('#txtAccountSecretKey').text(), authCode = $('#txtAuthCode').val();
         accountSecretKey = accountSecretKey.replaceAll(' ', '');
         $.ajax({
             type: "POST",
             url: `/TwoFactor?handler=Configure&accountSecretKey=${accountSecretKey}&authCode=${authCode}`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: JSON.stringify({
+                authCode: 'abcd'
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                alert(response.responseText);
+                if (response.statusCode == 1) {
+                    $('[data-bs-dismiss="modal"]').click();
+                }
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    });
+    $('#btnDisabled').on('click', e => {
+        $.ajax({
+            type: "POST",
+            url: `/TwoFactor?handler=SetGAuthRequired&enable=false`,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("XSRF-TOKEN",
                     $('input:hidden[name="__RequestVerificationToken"]').val());

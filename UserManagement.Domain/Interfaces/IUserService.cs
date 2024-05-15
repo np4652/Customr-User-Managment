@@ -7,5 +7,6 @@ namespace UserManagement.Domain.Interfaces
     {
         Task<UserColumn> GetByUserName(string userName);
         Task<IResponse> SetGAuthAccountKey(string userName, string gAuthAccountKey);
+        Task<IResponse> SetGAuthRequired(string userName, bool enable);
     }
 }

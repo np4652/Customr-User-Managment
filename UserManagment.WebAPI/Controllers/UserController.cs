@@ -8,6 +8,7 @@ using UserManagement.Infrastructure.Services;
 using UserManagment.WebAPI.Modals;
 using UserManagement.Domain.Base;
 using UserManagement.Entities;
+using Entities.DTOs;
 
 namespace UserManagment.WebAPI.Controllers
 {
@@ -35,9 +36,12 @@ namespace UserManagment.WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public SetupCode SetupTwoFactor()
+        public async Task<GAuthenticatorResponse> SetupTwoFactor()
         {
-            return _gAuthManager.Setup(User.GetLoggedInUserName());
+            var user = await _userService.GetByUserName(User.GetLoggedInUserName());
+            var res = _gAuthManager.Setup(user.UserName, user.GAuthAccountKey);
+            res.Enabled = user.GAuthRequired;
+            return res;
         }
 
         [HttpPost("[action]")]
@@ -49,6 +53,12 @@ namespace UserManagment.WebAPI.Controllers
                 res = await _userService.SetGAuthAccountKey(User.GetLoggedInUserName(), req.AccountSecretKey);
             }
             return res;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IResponse> SetGAuthRequired(bool enable)
+        {
+            return await _userService.SetGAuthRequired(User.GetLoggedInUserName(), enable);
         }
     }
 }

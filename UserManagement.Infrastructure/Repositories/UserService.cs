@@ -41,5 +41,10 @@ namespace UserManagement.Infrastructure.Repositories
         {
             return await _context.GetAsync<Response>(_query.SetGAuthAccountKey, new { userName , gAuthAccountKey });
         }
+
+        public async Task<IResponse> SetGAuthRequired(string userName, bool enable)
+        {
+            return await _context.GetAsync<Response>(_query.SetGAuthRequired, new { userName, enable });
+        }
     }
 }
