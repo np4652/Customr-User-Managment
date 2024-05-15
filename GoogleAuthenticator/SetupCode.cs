@@ -2,10 +2,10 @@
 {
     public class SetupCode
     {
-        public string Account { get; set; }
-        public string AccountSecretKey { get; set; }
+        public string Account { get; internal set; }
+        public string AccountSecretKey { get; internal set; }
         public string ManualEntryKey { get; set; }
-        public string QrCodeSetupImageUrl { get; set; }
-        public string QrString { get; set; }
+        public string QrCodeSetupImageUrl { get; internal set; }
+        public string QrString { get; internal set; }
     }
 }

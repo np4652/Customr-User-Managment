@@ -14,9 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GoogleAuthenticator\GoogleAuthenticator.csproj" />
     <ProjectReference Include="..\SQLQuery\SQLQuery.csproj" />
     <ProjectReference Include="..\UserManagement.Domain\UserManagement.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GoogleAuthenticator">
+      <HintPath>..\References\GoogleAuthenticator.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
