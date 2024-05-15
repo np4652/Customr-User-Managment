@@ -3,6 +3,7 @@ using System.Security.Claims;
 using UserManagement.Domain.Base;
 using UserManagement.Domain.Interfaces;
 using UserManagement.Entities;
+using UserManagement.Infrastructure.Services;
 using Usermanagment.Entities;
 using Usermanagment.Entities.DTOs;
 using UserManagment.WebAPI.Modals;
@@ -17,18 +18,23 @@ namespace UserManagment.WebAPI.Controllers
         private readonly ISignInManager _signInManager;
         private readonly IPasswordManager _PasswordManager;
         private readonly ITokenManager _tokenManager;
-        public AccountController(ISignInManager signInManager, IUserService userService, IPasswordManager PasswordManager, ITokenManager tokenManager)
+        private readonly IGoogleAuthenticatorManager _gAuthManager;
+        public AccountController(ISignInManager signInManager, IUserService userService, IPasswordManager PasswordManager, ITokenManager tokenManager, IGoogleAuthenticatorManager gAuthManager)
         {
             _signInManager = signInManager;
             _userService = userService;
             _PasswordManager = PasswordManager;
             _tokenManager = tokenManager;
+            _gAuthManager = gAuthManager;
         }
 
         [HttpPost("[action]")]
-        public async Task<IResponse<AuthenticateResponse>> SignIn(string userName, string password)
+        public async Task<IResponse<AuthenticateResponse>> SignIn(string userName, string password, string authCode="")
         {
-            IResponse<AuthenticateResponse> res = new Response<AuthenticateResponse>();
+            IResponse<AuthenticateResponse> res = new Response<AuthenticateResponse>
+            {
+                ResponseText = "Invalid Credentials"
+            };
             var user = await _userService.GetByUserName(userName);
             if (user == null)
             {
@@ -38,6 +44,20 @@ namespace UserManagment.WebAPI.Controllers
             /* Genrate JWT Tokan Here */
             if (signinRes.StatusCode == ResponseStatus.Success && user.Id > 0)
             {
+                if (user.GAuthRequired)
+                {
+                    if (string.IsNullOrEmpty(authCode))
+                    {
+                        res.StatusCode = ResponseStatus.GAuthRequired;
+                        res.ResponseText = "2 FA Required.Please authenticate with google authenticator";
+                        return res;
+                    }
+                    if (!_gAuthManager.Verify(authCode, user.GAuthAccountKey))
+                    {
+                        res.ResponseText = "Invalid Google Auth Code";
+                        return res;
+                    }
+                }
                 var claims = new[] {
                     new Claim(ClaimTypesExtension.UserName, user.UserName),
                     new Claim(ClaimTypesExtension.Id, user.Id.ToString()),

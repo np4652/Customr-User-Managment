@@ -24,12 +24,13 @@ namespace Usermanagment.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(string user, string password, string ReturnUrl)
+        public async Task<IActionResult> Login(string user, string password,string authCode, string ReturnUrl)
         {
             if (_httpContextAccessor.HttpContext == null)
             {
                 return NotFound();
             }
+            ViewBag.Message = "Invalid Credentials";
             // Validate login credentials here and get user details.
             using (HttpClient client = new HttpClient())
             {
@@ -37,11 +38,13 @@ namespace Usermanagment.WebApp.Controllers
                 {
                     client.BaseAddress = new Uri("http://localhost:5109");
                     client.DefaultRequestHeaders.Add("Accept", "application/json");
-                    HttpResponseMessage response = await client.PostAsync($"/api/Account/SignIn?userName={user}&password={password}", null);
+                    HttpResponseMessage response = await client.PostAsync($"/api/Account/SignIn?userName={user}&password={password}&authCode={authCode}", null);
                     if (response.IsSuccessStatusCode)
                     {
                         string responseData = await response.Content.ReadAsStringAsync();
                         var res = JsonConvert.DeserializeObject<Response<AuthenticateResponse>>(responseData);
+                        ViewBag.Message = res.ResponseText;
+                        ViewBag.StatusCode = res.StatusCode;
                         if (res.StatusCode == UserManagement.Entities.ResponseStatus.Success && res.Result != null)
                         {
                             var claims = new List<Claim>{
@@ -64,7 +67,6 @@ namespace Usermanagment.WebApp.Controllers
                     ViewBag.Message = ex.Message;
                 }
             }
-            ViewBag.Message = "Invalid Credentials";
             return View();
         }
 
