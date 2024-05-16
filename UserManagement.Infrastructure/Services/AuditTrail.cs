@@ -22,9 +22,6 @@ namespace UserManagement.Infrastructure.Services
             {
                 return;
             }
-
-
-            // Get the properties from type
             Type type = oldEntity.GetType();
             PropertyInfo[] propertyInfos = type.GetProperties();
             var transaction = _context.Connection.BeginTransaction();

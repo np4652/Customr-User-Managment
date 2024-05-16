@@ -37,8 +37,7 @@ namespace Usermanagment.WebApp.Views.User
                 }
             }
         }
-
-        [HttpPost]
+        
         public async Task<IActionResult> OnPostConfigure(string accountSecretKey, string authCode)
         {
             IResponse res = new Response();
@@ -70,7 +69,6 @@ namespace Usermanagment.WebApp.Views.User
             return new JsonResult(res);
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostSetGAuthRequired(bool enable)
         {
             IResponse res = new Response();
