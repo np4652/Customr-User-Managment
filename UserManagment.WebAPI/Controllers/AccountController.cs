@@ -19,13 +19,15 @@ namespace UserManagment.WebAPI.Controllers
         private readonly IPasswordManager _PasswordManager;
         private readonly ITokenManager _tokenManager;
         private readonly IGoogleAuthenticatorManager _gAuthManager;
-        public AccountController(ISignInManager signInManager, IUserService userService, IPasswordManager PasswordManager, ITokenManager tokenManager, IGoogleAuthenticatorManager gAuthManager)
+        private readonly IAuditTrail<IRow> _auditTrail;
+        public AccountController(ISignInManager signInManager, IUserService userService, IPasswordManager PasswordManager, ITokenManager tokenManager, IGoogleAuthenticatorManager gAuthManager, IAuditTrail<IRow> auditTrail)
         {
             _signInManager = signInManager;
             _userService = userService;
             _PasswordManager = PasswordManager;
             _tokenManager = tokenManager;
             _gAuthManager = gAuthManager;
+            _auditTrail = auditTrail;
         }
 
         [HttpPost("[action]")]
@@ -76,6 +78,22 @@ namespace UserManagment.WebAPI.Controllers
         {
             request.Role = UserRole.User;
             return Ok(await _userService.Add(new ServiceRequest<UserRow> { param = request.ToUserRow(_PasswordManager) }));
+        }
+
+        /// <summary>
+        /// Test AuditTrail For Delete 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{userName}")]
+        public async Task<IActionResult> DeleteUser(string userName)
+        {
+            var user = await _userService.GetByUserName(userName);
+            if (user != null)
+            {
+                _ = _auditTrail.DeleteAsync(user);
+            }
+            return Ok("Delete Successfully!!!");
         }
     }
 }

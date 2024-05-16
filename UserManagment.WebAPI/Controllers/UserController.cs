@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using UserManagement.Domain.Interfaces;
 using Usermanagment.Entities;
 using Helpers.Extensions;
-using GoogleAuthenticator;
 using UserManagement.Infrastructure.Services;
 using UserManagment.WebAPI.Modals;
 using UserManagement.Domain.Base;
@@ -19,10 +18,12 @@ namespace UserManagment.WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IGoogleAuthenticatorManager _gAuthManager;
-        public UserController(IUserService userService, IGoogleAuthenticatorManager gAuthManager)
+        private readonly IAuditTrail<IRow> _auditTrail;
+        public UserController(IUserService userService, IGoogleAuthenticatorManager gAuthManager, IAuditTrail<IRow> auditTrail)
         {
             _userService = userService;
             _gAuthManager = gAuthManager;
+            _auditTrail = auditTrail;
         }
 
         [HttpPost("[action]")]
@@ -58,6 +59,16 @@ namespace UserManagment.WebAPI.Controllers
         [HttpPost("[action]")]
         public async Task<IResponse> SetGAuthRequired(bool enable)
         {
+            var user = await _userService.GetByUserName(User.GetLoggedInUserName());
+            var res = await _userService.SetGAuthRequired(User.GetLoggedInUserName(), enable);
+            if (res.StatusCode == ResponseStatus.Success)
+            {
+                _ = _auditTrail.UpdateAsync(user, new UserRow
+                {
+                    Id = user.Id,
+                    GAuthRequired = enable
+                });
+            }
             return await _userService.SetGAuthRequired(User.GetLoggedInUserName(), enable);
         }
     }

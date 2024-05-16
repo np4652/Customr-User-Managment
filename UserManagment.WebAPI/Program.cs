@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 AppSettings appSettings = new();
 builder.Configuration.Bind(appSettings);
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDbContext>(sp => new DbContext($"{builder.Configuration.GetConnectionString("DbContext")}"));
 builder.Services.AddAuthentication(option =>
 {
@@ -42,6 +43,7 @@ builder.Services.AddAuthentication(option =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.JWTConfig?.Secretkey ?? string.Empty))
     };
 });
+builder.Services.AddScoped(typeof(IAuditTrail<>), typeof(AuditTrail<>));
 builder.Services.AddScoped<ISignInManager, SignInManager>();
 builder.Services.AddSingleton<IPasswordManager, PasswordManager>();
 builder.Services.AddSingleton<IGoogleAuthenticatorManager, GoogleAuthenticatorManager>();

@@ -26,7 +26,7 @@ namespace Usermanagment.Entities
         public string GAuthAccountKey { get; set; }
     }
 
-    public class UserColumn : IColumn
+    public class UserColumn : IColumn, IRow
     {
         public int Id { get; set; }
         public UserRole Role { get; set; }

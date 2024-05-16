@@ -5,7 +5,7 @@ using UserManagement.Domain.Base;
 
 namespace UserManagement.Infrastructure
 {
-    public class DbContext: IDbContext
+    public class DbContext : IDbContext
     {
         private readonly string _connectionString;
         private IDbConnection DB { get; set; }
@@ -13,8 +13,8 @@ namespace UserManagement.Infrastructure
         {
             _connectionString = connectionString;
         }
-        
-        protected IDbConnection Connection
+
+        public IDbConnection Connection
         {
             get
             {
@@ -26,6 +26,29 @@ namespace UserManagement.Infrastructure
 
                 return DB;
             }
+        }
+
+        public async Task<int> ExecuteAsync(string sp, object param, IDbTransaction transaction, CommandType commandType = CommandType.StoredProcedure)
+        {
+            int i = -1;
+            try
+            {
+                i = await Connection.ExecuteAsync(sp, param, commandType: commandType, transaction: transaction);
+            }
+            catch (Exception ex)
+            {
+                var w32ex = ex as SqlException;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as SqlException;
+                }
+                if (w32ex != null)
+                {
+                    i = w32ex.Number;
+                }
+                throw;
+            }
+            return i;
         }
 
         public async Task<int> ExecuteAsync(string sp, object param = null, CommandType commandType = CommandType.StoredProcedure)
@@ -61,7 +84,7 @@ namespace UserManagement.Infrastructure
             }
             return i;
         }
-        
+
         public async Task<T> GetAsync<T>(string sp, object parms = null, CommandType commandType = CommandType.Text)
         {
             T result;
